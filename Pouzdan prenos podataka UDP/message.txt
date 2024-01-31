@@ -1,0 +1,15 @@
+poruka 1
+	poruka 2222
+poruka 3
+hello world 4
+55555 poruka 555
+poruka 666666
+				poruka 777
+					8				
+poruka 9
+poruka  poruka poruka10
+11 11 11 11 11 11		11
+poruka 12 12
+poruka 13iii
+14 poruka 14
+

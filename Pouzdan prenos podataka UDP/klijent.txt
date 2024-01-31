@@ -1,0 +1,34 @@
+Ovaj kod predstavlja implementaciju klijenta UDP protokola u programskom jeziku C. Koristi se biblioteka "ncurses" za ispis poruka na prozoru terminala. Koristi se struktura podataka "Header" koja sadrži informacije o tipu poruke, ID-u i veličini podataka. Takođe se koristi struktura podataka "Package" koja sadrži "Header" i podatke.
+Kod se sastoji od više funkcija koje se koriste za različite aktivnosti kao što su: zatvaranje socket-a, oslobađanje memorije, provera veličine terminala, provera ACK-a, itd.
+Klijent šalje poruke serveru iz datoteke "message.txt" i čeka potvrdu (ACK) od servera. Ukoliko se ne dobije potvrda unutar određenog vremena ili ako potvrda nije ispravna, klijent će ponoviti slanje poruke.
+
+
+
+
+Krsto Zaric
+objasni mi sve implementirane funckije posebno
+"cleanUp()" funkcija se koristi za zatvaranje socket-a, ispis poruke na ekranu da je program završen, i zatvaranje prozora koji koristi "ncurses" biblioteka.
+
+"freePackages()" funkcija se koristi za oslobađanje memorije koju su zauzele strukture "Package".
+
+"checkTerminalSize()" funkcija se koristi za proveru da li je veličina terminala dovoljna za prikaz svih elemenata na ekranu. Ukoliko nije, korisniku se prikazuje poruka da poveća veličinu terminala.
+
+"checkACK()" funkcija se koristi za proveru da li je potvrda (ACK) ispravna. Funkcija proverava da li je tip potvrde 1, da li je ID isti kao što se očekuje i da li su podaci "ACK".
+
+"getNumberOfPackages()" funkcija se koristi za čitanje broja poruka iz datoteke "message.txt" koji će biti poslate serveru.
+
+"sendPackages()" funkcija se koristi za slanje svih poruka serveru i čekanje potvrde (ACK) od servera. Ukoliko se ne dobije potvrda unutar određenog vremena ili ako potvrda nije ispravna, funkcija će ponoviti slanje poruke.
+
+"signalHandler()" funkcija se koristi za obradu signala koji se šalje programu prilikom prekida (npr. kada se pritisne "CTRL + C"). Signal se obrađuje tako što se poziva "cleanUp()" funkcija.
+
+
+
+"main()" funkcija je glavna funkcija programa i sadrži logiku koja se izvršava kada se program pokrene.
+
+Prvo se definišu varijable i strukture potrebne za rad programa.
+Kreira se socket za komunikaciju sa serverom i podešavaju se parametri za povezivanje sa serverom (IP adresa i port).
+Se koristi "ncurses" biblioteka za inicijalizaciju prozora za ispis poruka.
+Se poziva funkcija "getNumberOfPackages()" za čitanje broja poruka iz datoteke "message.txt" koji će biti poslate serveru.
+Se poziva funkcija "sendPackages()" za slanje svih poruka serveru i čekanje potvrde (ACK) od servera.
+Se koristi "signalHandler()" funkcija za obradu signala koji se šalje programu prilikom prekida (npr. kada se pritisne "CTRL + C"). Signal se obrađuje tako što se poziva "cleanUp()" funkcija.
+Nakon što se izvrše sve aktivnosti, program se završava sa pozivom funkcije "cleanUp()" za zatvaranje socket-a i prikazivanje poruke korisniku da je program završen.
