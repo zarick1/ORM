@@ -31,6 +31,7 @@ int len;
 
 WINDOW* mainWindow;
 
+/* Close socket, clean up ncurses, and exit program. */
 void cleanUp() {
 
 	close(sockfd);
@@ -45,6 +46,7 @@ void cleanUp() {
 	exit(EXIT_SUCCESS);
 }
 
+/* Get current time and store it in packageTime buffer. */
 void getCurrentTime(char* packageTime) {
 	time_t rawtime;
 	struct tm* timeinfo;
@@ -55,6 +57,7 @@ void getCurrentTime(char* packageTime) {
 	snprintf(packageTime, strlen(asctime(timeinfo)), "%s", asctime(timeinfo));
 }
 
+/* Check if terminal size meets minimum requirements. Exit if too small. */
 void checkTerminalSize(int yMax, int xMax) {
 
 	char timeStamp[30];
@@ -74,6 +77,7 @@ void checkTerminalSize(int yMax, int xMax) {
 	}
 }
 
+/* Initialize output file with header for new messages. */
 void initializeOutputFile() {
 
 	FILE* filePointer;
@@ -89,6 +93,7 @@ void initializeOutputFile() {
 	fclose(filePointer);
 }
 
+/* Write message with timestamp to file and display in ncurses window. */
 void writeMessageToFile(char* message, int id, WINDOW* win) {
 
 	FILE* filePointer;
@@ -113,6 +118,8 @@ void writeMessageToFile(char* message, int id, WINDOW* win) {
 	fclose(filePointer);
 }
 
+/* Validate package format (0.<id>.<data>.<message>) and extract message.
+ * Store package ID in id. Return 1 if valid, 0 if invalid. */
 int checkPackage(char* message, int* id) {
 
 	char header[MAXCHAR] = "";
@@ -159,6 +166,7 @@ int checkPackage(char* message, int* id) {
 	return 1;
 }
 
+/* Send ACK message (1.<id>.ACK) to client for received package. */
 void sendACK(int id) {
 
 	char message[MAXCHAR];
@@ -176,6 +184,7 @@ void sendACK(int id) {
 	#endif
 }
 
+/* Receive UDP package into buffer. Exit if no message within timeout. */
 void receivePackage(char* buffer) {
 
 	memset(buffer, 0, MAXCHAR);
@@ -194,7 +203,7 @@ void receivePackage(char* buffer) {
 
 }
 
-// Driver code
+/* Main function: set up UDP socket, ncurses display, and process incoming messages. */
 int main() {
 
 	char buffer[MAXCHAR];

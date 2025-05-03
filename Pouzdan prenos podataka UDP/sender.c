@@ -38,6 +38,7 @@ typedef struct Package {
 	char* data;
 } Package;
 
+/* Close socket, clean up ncurses, and exit program. */
 void cleanUp() {
 
 	close(sockfd);
@@ -52,6 +53,7 @@ void cleanUp() {
 	exit(EXIT_SUCCESS);
 }
 
+/* Free memory allocated for package data. */
 void freePackages(struct Package package[], int numberOfPackages) {
 
 	for (int i = 0; i < numberOfPackages; i++)
@@ -60,6 +62,7 @@ void freePackages(struct Package package[], int numberOfPackages) {
 	}
 }
 
+/* Check if terminal size meets minimum requirements. Exit if too small. */
 void checkTerminalSize(int yMax, int xMax) {
 
 	int minTerminalHeight = 9;	// 5 +4 zbog box okvira
@@ -75,6 +78,7 @@ void checkTerminalSize(int yMax, int xMax) {
 	}
 }
 
+/* Validate ACK message (1.<id>.ACK). Return 1 if valid, 0 if invalid. */
 int checkACK(char* string, int id) {
 
 	if (atoi(string) == 0)
@@ -111,6 +115,7 @@ int checkACK(char* string, int id) {
 	return 1;
 }
 
+/* Count number of packages (lines) in input file. Store in numberOfPackages. */
 void getNumberOfPackages(int* numberOfPackages)
 {
 	FILE* filePointer;
@@ -135,6 +140,7 @@ void getNumberOfPackages(int* numberOfPackages)
 	fclose(filePointer);
 }
 
+/* Read packages from input file and store in package array. */
 void getAllPackages(struct Package package[])
 {
 	FILE* filePointer;
@@ -168,6 +174,7 @@ void getAllPackages(struct Package package[])
 	}
 }
 
+/* Send package with given ID to server. Format: 0.<id>.<size>.<data>. */
 void sendPackage(struct Package package[], int id)
 {
 	package[id].header.type = 0;
@@ -194,6 +201,7 @@ void sendPackage(struct Package package[], int id)
 	sendCounter++;
 }
 
+/* Receive ACK from server. Update currentId if valid, resend if invalid. */
 void receivePackage(struct Package package[], int* currentId) {
 
 	int n, len;
@@ -221,7 +229,7 @@ void receivePackage(struct Package package[], int* currentId) {
 	}
 }
 
-// Driver code
+/* Main function: read packages from file, set up socket, and send packages. */
 int main() {
 
 	int numberOfPackages = 0;
